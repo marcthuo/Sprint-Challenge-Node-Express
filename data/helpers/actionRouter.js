@@ -38,17 +38,18 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+//check
+router.post('/addAct', async (req, res) => {
         const newAct = req.body;
     try {    
-        const action = await db.insert(newAct);
-        console.log(action);
+        await db.insert(newAct);
             res.status(201).json({
                 message: 'New action created'
             });
     } catch (err) {
         console.log(err);
-        res.status(500).json({message: 'There was an error saving action.'
+        res.status(500).json({
+            message: 'There was an error saving action.'
     });
     }
 });
@@ -75,6 +76,7 @@ router.put('/:id', async (req, res) => {
         });    
     }
 });
+
 //check
 router.delete('/:id', async (req, res) => {
     const {id} = req.params;

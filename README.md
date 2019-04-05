@@ -30,11 +30,20 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Describe Middleware?
 
+[]
+
 - [ ] Describe a Resource?
 
-- [ ] What can the API return to help clients know if a request was successful?
+[]
+
+- [ ] What can the API return to help clients know if a 
+request was successful?
+
+[]
 
 - [ ] How can we partition our application into sub-applications?
+
+[]
 
 ## Project Setup
 

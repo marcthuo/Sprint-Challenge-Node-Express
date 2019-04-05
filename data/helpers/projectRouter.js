@@ -17,11 +17,12 @@ router.get('/', async (req, res) => {
     }
 });
 
+// check
 router.get('/:id', async (req, res) => {
     const {id} = req.params;
     try {
-        const hub = await db.get(id).then(db => {
-            if (db) {
+        const hub = await db.get(id).then(hub => {
+            if (hub) {
                 res.status(200).json(hub);
             } else {
                 res.status(404).json({
@@ -37,18 +38,20 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+//check
 router.get('/:id/actions', async (req, res) => {
+     const {id} = req.params;
+     const pros = await db.get(id);
     try {
-        const {id} = req.params;
-        const pros = await db.get(id);
-        const action = await db.getProjectActions(id);
-        if (!project) {
-            res.status(404).json(action);
+        const action = await db.getProjectActions(id).then(action => {
+        if (action) {
+            res.status(200).json(action);
         } else {
             res.status(404).json({
                 message: 'No action made',
-            })
+            });
         }
+        })
     } catch (err) {
         res.status(500).json({
             message: 'error getting action',
@@ -56,56 +59,59 @@ router.get('/:id/actions', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+//check
+router.post('/addProj', async (req, res) => {
+    const newProj = req.body;
     try {
-        if (!name || !description) {
-            res.status(404).json({
-                message: 'provide details'
+        await db.insert(newProj);
+            res.status(201).json({
+                message: 'New project created'
             })
-        } 
-        const {id} = await db.insert(req.body).then(newDb => {
-             res.status(200).json(newDb);
-        });
-    } catch (err) {
+        }   catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'There was an error saving post.'
+            message: 'There was an error saving project.'
     });
     }
 });
 
-router.put('/', async (req, res) => {
+//check
+router.put('/:id', async (req, res) => {
+    const {id} = req.params;
+    const updateP = req.body;
     try {
-        const hubs = await db.update(req.params.id, req.body).then(hubs => { 
+        const hubs = await db.get(id);
+        await db.update(id, updateP).then(hubs => { 
+            if (hubs) {
             res.status(200).json(hubs);
-        });
-        { res.status(200).json(db);
-        if (!id) {
+        } else {
             res.status(404).json({
                 message: `The project id ${id} does not exist`,
             })
-        }} res.json(hubs);
+            }
+        }) 
     } catch (err) {
         console.log(err);
-        if( count = project.length > 0 ) {
-            
-        }
         res.status(500).json({
             message: 'error has occurred'
         });
     }
 });
 
+//check
 router.delete('/:id', async (req, res) => {
+    const {id} = req.params;
     try {
-        const led = await db.remove(req.param.id).then(led => {
+        const led = await db.get(id);
+        await db.remove(id).then(led => {
+            if (led) {
             res.status(200).json(led)
-        });
-        {
+        } else {
             res.status(404).end({
-                message: `The project id ${id} does not exist.`,
+            message: `The project does not exist.`,
             })
-        }   res.json(led);
+        }
+        })
     } catch (err) {
         console.log(err);
         res.status(500).json({
