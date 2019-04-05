@@ -4,6 +4,7 @@ const db = require('./projectModel.js');
 
 const router = express.Router();
 
+//check
 router.get('/', async (req, res) => {
     try {
         const pro = await db.get();
@@ -17,6 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+    const {id} = req.params;
     try {
         const hub = await db.get(id).then(db => {
             if (db) {

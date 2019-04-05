@@ -12,8 +12,8 @@ server.use(express.json());
 server.use(helmet());
 server.use(morgan('dev'));
 server.use(cors());
-server.use('api/projects', projectRouter);
-server.use('api/actions', actionRouter);
+server.use('/api/projects', projectRouter);
+server.use('/api/actions', actionRouter);
 server.use(updater);
 
 server.get('/', (req, res) => {

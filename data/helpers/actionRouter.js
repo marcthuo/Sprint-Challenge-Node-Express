@@ -4,6 +4,7 @@ const db = require('./actionModel.js');
 
 const router = express.Router();
 
+//check
 router.get('/', async (req, res) => {
     try {
         const hubs = await db.get();
@@ -16,6 +17,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+//check
 router.get('/:id', async (req, res) => {
     const {id} = req.params;
     try {
@@ -37,10 +39,13 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+        const newAct = req.body;
     try {    
-        const action = await db.insert(req.body).then(action => {
-            res.status(201).json(action);
-        });
+        const action = await db.insert(newAct);
+        console.log(action);
+            res.status(201).json({
+                message: 'New action created'
+            });
     } catch (err) {
         console.log(err);
         res.status(500).json({message: 'There was an error saving action.'
@@ -48,35 +53,42 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/', async (req, res) => {
+// check
+router.put('/:id', async (req, res) => {
+    const {id} = req.params;
+    const update = req.body;
     try {
-        const hub = await db.update(req.params.id, req.body).then(hub => { 
+        const hub = await db.get(id);
+        await db.update(id, update).then(hub => { 
+            if (hub) {
             res.status(200).json(hub);
-        });
-        { res.status(200).json(db);
-        if (!id) {
-            res.status(404).json({
+            } else { 
+                res.status(404).json({
                 message: 'The action does not exist',
-            })
-        }} res.json(hub);
+                });
+            }
+        }) 
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            message: 'error has occurred'
+             message: 'error has occurred'
         });    
     }
 });
-
+//check
 router.delete('/:id', async (req, res) => {
+    const {id} = req.params;
     try {
-        const del = await db.remove(req.param.id).then(del => {
+        const del = await db.get(id);
+        await db.remove(id).then(del => {
+            if (del) {
             res.status(200).json(del)
-        });
-        {
+        } else {
             res.status(404).end({
-                message: `The action does not exist.`,
+            message: `The action does not exist.`,
             })
-        }   res.json(del);
+        }
+        })
     } catch (err) {
         console.log(err);
         res.status(500).json({
