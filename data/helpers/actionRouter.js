@@ -39,7 +39,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //check
-router.post('/addAct', async (req, res) => {
+router.post('/', async (req, res) => {
         const newAct = req.body;
     try {    
         await db.insert(newAct);

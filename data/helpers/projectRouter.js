@@ -60,7 +60,7 @@ router.get('/:id/actions', async (req, res) => {
 });
 
 //check
-router.post('/addProj', async (req, res) => {
+router.post('/', async (req, res) => {
     const newProj = req.body;
     try {
         await db.insert(newProj);
